@@ -7,27 +7,54 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C2F7610C2FF12A3D00605FDE /* TranscribeApp in Frameworks */ = {isa = PBXBuildFile; productRef = C2F7610B2FF12A3D00605FDE /* TranscribeApp */; };
+		C28A08BE2FF1644A007F2126 /* TranscribeApp in Frameworks */ = {isa = PBXBuildFile; productRef = C28A08BD2FF1644A007F2126 /* TranscribeApp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C210C5C12FF11F60000A4672 /* Transcribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transcribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C28177642FF15FD80085BAD3 /* Transcribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transcribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C2C6E8EA2FF1608A009112B3 /* Exceptions for "Transcribe" folder in "Transcribe" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppIcon.icon,
+				Assets.xcassets,
+				InfoPlist.xcstrings,
+				main.swift,
+			);
+			target = C28177632FF15FD80085BAD3 /* Transcribe */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		C2C6E8F12FF161BF009112B3 /* Exceptions for "Transcribe" folder in "Copy Bundle Resources" phase from "Transcribe" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = C28177622FF15FD80085BAD3 /* Resources */;
+			membershipExceptions = (
+				Transcribe.entitlements,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C210C5C32FF11F60000A4672 /* Transcribe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C2C6E8EA2FF1608A009112B3 /* Exceptions for "Transcribe" folder in "Transcribe" target */,
+				C2C6E8F12FF161BF009112B3 /* Exceptions for "Transcribe" folder in "Copy Bundle Resources" phase from "Transcribe" target */,
+			);
 			path = Transcribe;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C210C5BE2FF11F60000A4672 /* Frameworks */ = {
+		C28177612FF15FD80085BAD3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2F7610C2FF12A3D00605FDE /* TranscribeApp in Frameworks */,
+				C28A08BE2FF1644A007F2126 /* TranscribeApp in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,7 +73,7 @@
 		C210C5C22FF11F60000A4672 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C210C5C12FF11F60000A4672 /* Transcribe.app */,
+				C28177642FF15FD80085BAD3 /* Transcribe.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,27 +88,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C210C5C02FF11F60000A4672 /* Transcribe */ = {
+		C28177632FF15FD80085BAD3 /* Transcribe */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C210C5CC2FF11F61000A4672 /* Build configuration list for PBXNativeTarget "Transcribe" */;
+			buildConfigurationList = C281776C2FF15FD90085BAD3 /* Build configuration list for PBXNativeTarget "Transcribe" */;
 			buildPhases = (
-				C210C5BD2FF11F60000A4672 /* Sources */,
-				C210C5BE2FF11F60000A4672 /* Frameworks */,
-				C210C5BF2FF11F60000A4672 /* Resources */,
+				C28177602FF15FD80085BAD3 /* Sources */,
+				C28177612FF15FD80085BAD3 /* Frameworks */,
+				C28177622FF15FD80085BAD3 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				C210C5C32FF11F60000A4672 /* Transcribe */,
-			);
 			name = Transcribe;
 			packageProductDependencies = (
-				C2F7610B2FF12A3D00605FDE /* TranscribeApp */,
+				C28A08BD2FF1644A007F2126 /* TranscribeApp */,
 			);
 			productName = Transcribe;
-			productReference = C210C5C12FF11F60000A4672 /* Transcribe.app */;
+			productReference = C28177642FF15FD80085BAD3 /* Transcribe.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -94,7 +118,7 @@
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
-					C210C5C02FF11F60000A4672 = {
+					C28177632FF15FD80085BAD3 = {
 						CreatedOnToolsVersion = 26.6;
 					};
 				};
@@ -105,6 +129,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = C210C5B82FF11F60000A4672;
 			minimizedProjectReferenceProxies = 1;
@@ -113,13 +138,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C210C5C02FF11F60000A4672 /* Transcribe */,
+				C28177632FF15FD80085BAD3 /* Transcribe */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C210C5BF2FF11F60000A4672 /* Resources */ = {
+		C28177622FF15FD80085BAD3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -129,7 +154,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C210C5BD2FF11F60000A4672 /* Sources */ = {
+		C28177602FF15FD80085BAD3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -199,6 +224,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -256,18 +282,16 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
-		C210C5CD2FF11F61000A4672 /* Debug */ = {
+		C281776D2FF15FD90085BAD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Transcribe/Transcribe.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4YP7SQBLYV;
 				ENABLE_APP_SANDBOX = YES;
@@ -275,34 +299,45 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Transcribe uses speech recognition to transcribe audio files you choose.";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe your speech into text.";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kantacky.Transcribe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				XROS_DEPLOYMENT_TARGET = 26.5;
 			};
 			name = Debug;
 		};
-		C210C5CE2FF11F61000A4672 /* Release */ = {
+		C281776E2FF15FD90085BAD3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Transcribe/Transcribe.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4YP7SQBLYV;
 				ENABLE_APP_SANDBOX = YES;
@@ -310,22 +345,36 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Transcribe uses speech recognition to transcribe audio files you choose.";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Used to transcribe your speech into text.";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kantacky.Transcribe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				XROS_DEPLOYMENT_TARGET = 26.5;
 			};
 			name = Release;
 		};
@@ -341,11 +390,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C210C5CC2FF11F61000A4672 /* Build configuration list for PBXNativeTarget "Transcribe" */ = {
+		C281776C2FF15FD90085BAD3 /* Build configuration list for PBXNativeTarget "Transcribe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C210C5CD2FF11F61000A4672 /* Debug */,
-				C210C5CE2FF11F61000A4672 /* Release */,
+				C281776D2FF15FD90085BAD3 /* Debug */,
+				C281776E2FF15FD90085BAD3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -353,7 +402,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C2F7610B2FF12A3D00605FDE /* TranscribeApp */ = {
+		C28A08BD2FF1644A007F2126 /* TranscribeApp */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TranscribeApp;
 		};

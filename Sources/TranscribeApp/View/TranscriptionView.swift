@@ -19,7 +19,8 @@ struct TranscriptionView: View {
             .toolbar {
                 ToolbarItem {
                     Button(
-                        "Export Text", systemImage: "square.and.arrow.down",
+                        String(localized: "Export Text", bundle: .module),
+                        systemImage: "square.and.arrow.down",
                         action: model.showExporter
                     )
                     .disabled(!model.canExportTranscript)
@@ -33,7 +34,6 @@ struct TranscriptionView: View {
                 volatileSegment: model.volatileSegment
             )
         }
-        .frame(minWidth: 800, minHeight: 600)
         .dropDestination(for: URL.self) { urls, _ in
             model.handleDroppedURLs(urls)
         } isTargeted: { isTargeted in
