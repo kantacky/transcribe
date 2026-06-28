@@ -1,0 +1,7 @@
+[mcp_servers.xcode]
+command = "xcrun"
+args = ["mcpbridge"]
+default_tools_approval_mode = "approve"
+
+[plugins."context7@context7-marketplace"]
+enabled = true
