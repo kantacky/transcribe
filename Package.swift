@@ -8,7 +8,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v26),
-        .macOS(.v26)
+        .macOS(.v26),
     ],
     products: [
         .library(name: "TranscribeCore", targets: ["TranscribeCore"]),

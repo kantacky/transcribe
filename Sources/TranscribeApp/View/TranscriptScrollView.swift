@@ -13,7 +13,8 @@ struct TranscriptScrollView: View {
                         ContentUnavailableView(
                             String(localized: "No transcript yet", bundle: .module),
                             systemImage: "text.quote",
-                            description: Text("Drop an audio file to start transcribing.", bundle: .module)
+                            description: Text(
+                                "Drop an audio file to start transcribing.", bundle: .module)
                         )
                         .frame(maxWidth: .infinity, minHeight: 180)
                     } else {
