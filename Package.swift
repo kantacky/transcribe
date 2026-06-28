@@ -9,6 +9,7 @@ let package = Package(
         .macOS(.v26)
     ],
     products: [
+        .library(name: "TranscribeDomain", targets: ["TranscribeDomain"]),
         .library(name: "TranscribeCore", targets: ["TranscribeCore"]),
         .library(name: "TranscribeApp", targets: ["TranscribeApp"]),
         .executable(name: "TranscribeCLI", targets: ["TranscribeCLI"]),
@@ -17,6 +18,9 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0")
     ],
     targets: [
+        .target(
+            name: "TranscribeDomain"
+        ),
         .target(
             name: "TranscribeCore",
             linkerSettings: [
