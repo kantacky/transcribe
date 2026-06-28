@@ -7,8 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C28A08BE2FF1644A007F2126 /* TranscribeApp in Frameworks */ = {isa = PBXBuildFile; productRef = C28A08BD2FF1644A007F2126 /* TranscribeApp */; };
+		C29B09472FF1795100CA328E /* TranscribeApp in Frameworks */ = {isa = PBXBuildFile; productRef = C29B09462FF1795100CA328E /* TranscribeApp */; };
+		C2A536CB2FF1770D005E54DB /* TranscribeCLI in Embed CLI Tool */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = C2A536CA2FF1770D005E54DB /* TranscribeCLI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C2A537022FF177C4005E54DB /* TranscribeCLI in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = C2A536CA2FF1770D005E54DB /* TranscribeCLI */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C2A536711000000000000002 /* Embed CLI Tool */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				C2A536CB2FF1770D005E54DB /* TranscribeCLI in Embed CLI Tool */,
+			);
+			name = "Embed CLI Tool";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C28177642FF15FD80085BAD3 /* Transcribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transcribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,7 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C28A08BE2FF1644A007F2126 /* TranscribeApp in Frameworks */,
+				C2A537022FF177C4005E54DB /* TranscribeCLI in Frameworks */,
+				C29B09472FF1795100CA328E /* TranscribeApp in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +112,7 @@
 				C28177602FF15FD80085BAD3 /* Sources */,
 				C28177612FF15FD80085BAD3 /* Frameworks */,
 				C28177622FF15FD80085BAD3 /* Resources */,
+				C2A536711000000000000002 /* Embed CLI Tool */,
 			);
 			buildRules = (
 			);
@@ -102,7 +120,8 @@
 			);
 			name = Transcribe;
 			packageProductDependencies = (
-				C28A08BD2FF1644A007F2126 /* TranscribeApp */,
+				C2A536CA2FF1770D005E54DB /* TranscribeCLI */,
+				C29B09462FF1795100CA328E /* TranscribeApp */,
 			);
 			productName = Transcribe;
 			productReference = C28177642FF15FD80085BAD3 /* Transcribe.app */;
@@ -428,9 +447,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C28A08BD2FF1644A007F2126 /* TranscribeApp */ = {
+		C29B09462FF1795100CA328E /* TranscribeApp */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TranscribeApp;
+		};
+		C2A536CA2FF1770D005E54DB /* TranscribeCLI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TranscribeCLI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

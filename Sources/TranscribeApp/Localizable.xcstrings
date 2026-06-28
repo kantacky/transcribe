@@ -1,12 +1,32 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Cannot write to %@." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ を書き込めません。"
+          }
+        }
+      }
+    },
     "Choose Audio File" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "音声ファイルを選択"
+          }
+        }
+      }
+    },
+    "CLI installed" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CLIインストール済み"
           }
         }
       }
@@ -52,6 +72,56 @@
         }
       }
     },
+    "Install" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インストール"
+          }
+        }
+      }
+    },
+    "Install CLI Tool" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CLIツールをインストール"
+          }
+        }
+      }
+    },
+    "Install CLI Tool…" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CLIツールをインストール…"
+          }
+        }
+      }
+    },
+    "Installation failed" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インストール失敗"
+          }
+        }
+      }
+    },
+    "Installed to %@." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ にインストールされました。"
+          }
+        }
+      }
+    },
     "Language" : {
       "localizations" : {
         "ja" : {
@@ -85,6 +155,26 @@
     },
     "OK" : {
       "shouldTranslate" : false
+    },
+    "Select the directory to install \"transcribe\" into. ~/.local/bin is recommended." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“transcribe” をインストールするディレクトリを選択してください。 ~/.local/bin がおすすめです。"
+          }
+        }
+      }
+    },
+    "The CLI binary is not bundled with this app." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CLIバイナリがこのアプリにバンドルされていません。"
+          }
+        }
+      }
     },
     "Transcribing..." : {
       "extractionState" : "manual",
