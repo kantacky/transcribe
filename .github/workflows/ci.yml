@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: 0 15 * * *
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-26
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Select Xcode
+        run: xcodes select
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Resolve dependencies
+        run: swift package resolve
+
+      - name: Build
+        run: swift build
+
+  test:
+    name: Test
+    runs-on: macos-26
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Select Xcode
+        run: xcodes select
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Resolve dependencies
+        run: swift package resolve
+
+      - name: Test
+        run: swift test
+
+  lint:
+    name: Lint
+    runs-on: macos-26
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Select Xcode
+        run: xcodes select
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Lint
+        run: swift format lint --strict --recursive --configuration .swift-format Package.swift Sources Tests
+
+  format:
+    name: Format
+    runs-on: macos-26
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Select Xcode
+        run: xcodes select
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Format
+        run: |
+          swift format \
+            --in-place \
+            --recursive \
+            --configuration .swift-format Package.swift Sources Tests
+          git diff --exit-code -- Package.swift Sources Tests
