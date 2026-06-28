@@ -6,7 +6,7 @@ public struct TranscribeApp: App {
 
     public var body: some Scene {
         WindowGroup {
-            Text("Hello")
+            TranscriptionView()
         }
     }
 }

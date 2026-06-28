@@ -40,7 +40,9 @@ let package = Package(
         .target(
             name: "TranscribeApp",
             dependencies: [
-                "TranscribeCore"
+                "TranscribeCore",
+                "TranscribeDomain",
+                "TranscribeExport",
             ]
         ),
         .executableTarget(
