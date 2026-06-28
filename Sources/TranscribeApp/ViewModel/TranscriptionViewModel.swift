@@ -29,7 +29,7 @@ final class TranscriptionViewModel {
         !finalSegments.isEmpty
     }
 
-    var statusMessage: String {
+    var statusMessage: LocalizedStringKey {
         if isTranscribing {
             "Transcribing..."
         } else if supportedLocales.isEmpty {

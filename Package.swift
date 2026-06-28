@@ -5,7 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "Transcribe",
+    defaultLocalization: "en",
     platforms: [
+        .iOS(.v26),
         .macOS(.v26)
     ],
     products: [
@@ -41,6 +43,9 @@ let package = Package(
                 "TranscribeCore",
                 "TranscribeDomain",
                 "TranscribeExport",
+            ],
+            resources: [
+                .process("Localizable.xcstrings")
             ]
         ),
         .executableTarget(

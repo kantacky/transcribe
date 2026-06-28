@@ -7,7 +7,7 @@ struct AudioDropZone: View {
     let transcriptionProgress: Double
     let selectedLocale: Locale?
     let supportedLocales: [Locale]
-    let status: String
+    let status: LocalizedStringKey
     let onSelectLocale: (Locale) -> Void
     let onSelectFile: (URL) -> Void
 
@@ -19,12 +19,12 @@ struct AudioDropZone: View {
                 .font(.system(size: 44, weight: .medium))
                 .foregroundStyle(isTargeted ? Color.accentColor : Color.secondary)
 
-            Text(fileName ?? "Drop an audio file")
+            Text(fileName ?? String(localized: "Drop an audio file", bundle: .module))
                 .font(.headline)
 
             if isTranscribing {
                 ProgressView(value: transcriptionProgress, total: 1) {
-                    Text(status)
+                    Text(status, bundle: .module)
                 } currentValueLabel: {
                     Text(
                         transcriptionProgress,
@@ -35,13 +35,16 @@ struct AudioDropZone: View {
                 .controlSize(.small)
                 .frame(maxWidth: 260)
             } else {
-                Text(status)
+                Text(status, bundle: .module)
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
 
-            Picker("Language", selection: selectedLocaleBinding) {
+            Picker(
+                String(localized: "Language", bundle: .module),
+                selection: selectedLocaleBinding
+            ) {
                 ForEach(supportedLocales, id: \.identifier) { locale in
                     Text(
                         locale.localizedString(forIdentifier: locale.identifier)
@@ -53,8 +56,12 @@ struct AudioDropZone: View {
             .frame(maxWidth: 260)
             .disabled(supportedLocales.isEmpty)
 
-            Button("Choose Audio File", systemImage: "folder", action: showFileImporter)
-                .buttonStyle(.borderedProminent)
+            Button(
+                String(localized: "Choose Audio File", bundle: .module),
+                systemImage: "folder",
+                action: showFileImporter
+            )
+            .buttonStyle(.borderedProminent)
         }
         .frame(maxWidth: .infinity, minHeight: 180)
         .padding()

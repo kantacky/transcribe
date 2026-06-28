@@ -11,9 +11,9 @@ struct TranscriptScrollView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     if finalSegments.isEmpty && volatileSegment == nil {
                         ContentUnavailableView(
-                            "No transcript yet",
+                            String(localized: "No transcript yet", bundle: .module),
                             systemImage: "text.quote",
-                            description: Text("Drop an audio file to start transcribing.")
+                            description: Text("Drop an audio file to start transcribing.", bundle: .module)
                         )
                         .frame(maxWidth: .infinity, minHeight: 180)
                     } else {
