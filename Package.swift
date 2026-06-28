@@ -10,6 +10,7 @@ let package = Package(
     ],
     products: [
         .library(name: "TranscribeCore", targets: ["TranscribeCore"]),
+        .library(name: "TranscribeApp", targets: ["TranscribeApp"]),
         .executable(name: "TranscribeCLI", targets: ["TranscribeCLI"]),
     ],
     dependencies: [
@@ -20,6 +21,12 @@ let package = Package(
             name: "TranscribeCore",
             linkerSettings: [
                 .linkedFramework("Speech")
+            ]
+        ),
+        .target(
+            name: "TranscribeApp",
+            dependencies: [
+                "TranscribeCore"
             ]
         ),
         .executableTarget(
@@ -33,6 +40,12 @@ let package = Package(
             name: "TranscribeCoreTests",
             dependencies: [
                 "TranscribeCore"
+            ]
+        ),
+        .testTarget(
+            name: "TranscribeAppTests",
+            dependencies: [
+                "TranscribeApp"
             ]
         ),
         .testTarget(
