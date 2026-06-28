@@ -9,8 +9,6 @@ let package = Package(
         .macOS(.v26)
     ],
     products: [
-        .library(name: "TranscribeDomain", targets: ["TranscribeDomain"]),
-        .library(name: "TranscribeExport", targets: ["TranscribeExport"]),
         .library(name: "TranscribeCore", targets: ["TranscribeCore"]),
         .library(name: "TranscribeApp", targets: ["TranscribeApp"]),
         .executable(name: "TranscribeCLI", targets: ["TranscribeCLI"]),
