@@ -30,6 +30,9 @@ let package = Package(
         ),
         .target(
             name: "TranscribeCore",
+            dependencies: [
+                "TranscribeDomain"
+            ],
             linkerSettings: [
                 .linkedFramework("Speech")
             ]
