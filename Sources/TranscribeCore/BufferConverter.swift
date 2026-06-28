@@ -20,7 +20,8 @@ final class BufferConverter {
 
         if converter == nil || converter?.outputFormat != format {
             converter = AVAudioConverter(from: inputFormat, to: format)
-            converter?.primeMethod = .none  // Sacrifice quality of first samples in order to avoid any timestamp drift from source
+            // Sacrifice quality of first samples in order to avoid any timestamp drift from source
+            converter?.primeMethod = .none
         }
 
         guard let converter else {

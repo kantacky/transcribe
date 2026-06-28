@@ -7,7 +7,7 @@ public enum TranscriptionError: LocalizedError {
     case localeNotSupported
     case noInternetForModelDownload
     case audioFilePathNotFound
-    
+
     public var descriptionString: String {
         switch self {
         case .couldNotDownloadModel:
@@ -19,7 +19,8 @@ public enum TranscriptionError: LocalizedError {
         case .localeNotSupported:
             return "This locale is not yet supported by SpeechAnalyzer."
         case .noInternetForModelDownload:
-            return "The model could not be downloaded because the user is not connected to internet."
+            return
+                "The model could not be downloaded because the user is not connected to internet."
         case .audioFilePathNotFound:
             return "Couldn't write audio to file."
         }

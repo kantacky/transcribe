@@ -9,8 +9,11 @@ struct TranscriptionView: View {
                 HStack {
                     Spacer()
 
-                    Button("Export Text", systemImage: "square.and.arrow.down", action: model.showExporter)
-                        .disabled(!model.canExportTranscript)
+                    Button(
+                        "Export Text", systemImage: "square.and.arrow.down",
+                        action: model.showExporter
+                    )
+                    .disabled(!model.canExportTranscript)
                 }
 
                 AudioDropZone(
@@ -58,7 +61,7 @@ struct TranscriptionView: View {
         ) { result in
             model.finishExport()
 
-            if case let .failure(error) = result {
+            if case .failure(let error) = result {
                 model.showExportError(error)
             }
         }

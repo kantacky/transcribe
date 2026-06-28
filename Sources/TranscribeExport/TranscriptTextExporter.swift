@@ -3,9 +3,10 @@ import TranscribeDomain
 
 public enum TranscriptTextExporter {
     public static func fileName(for sourceFileName: String?) -> String {
-        let baseName = sourceFileName.map {
-            URL(fileURLWithPath: $0).deletingPathExtension().lastPathComponent
-        } ?? "Transcript"
+        let baseName =
+            sourceFileName.map {
+                URL(fileURLWithPath: $0).deletingPathExtension().lastPathComponent
+            } ?? "Transcript"
 
         return "\(baseName).txt"
     }

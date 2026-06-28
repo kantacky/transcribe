@@ -31,9 +31,9 @@ struct AudioDropZone: View {
                         format: .percent.precision(.fractionLength(0))
                     )
                 }
-                    .progressViewStyle(.linear)
-                    .controlSize(.small)
-                    .frame(maxWidth: 260)
+                .progressViewStyle(.linear)
+                .controlSize(.small)
+                .frame(maxWidth: 260)
             } else {
                 Text(status)
                     .font(.callout)
@@ -43,8 +43,11 @@ struct AudioDropZone: View {
 
             Picker("Language", selection: selectedLocaleBinding) {
                 ForEach(supportedLocales, id: \.identifier) { locale in
-                    Text(locale.localizedString(forIdentifier: locale.identifier) ?? locale.identifier)
-                        .tag(Optional(locale))
+                    Text(
+                        locale.localizedString(forIdentifier: locale.identifier)
+                            ?? locale.identifier
+                    )
+                    .tag(Optional(locale))
                 }
             }
             .frame(maxWidth: 260)
@@ -71,7 +74,7 @@ struct AudioDropZone: View {
             allowedContentTypes: [.audio],
             allowsMultipleSelection: false
         ) { result in
-            if case let .success(urls) = result, let url = urls.first {
+            if case .success(let urls) = result, let url = urls.first {
                 onSelectFile(url)
             }
         }

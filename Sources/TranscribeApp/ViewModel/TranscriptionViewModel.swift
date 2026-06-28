@@ -45,11 +45,12 @@ final class TranscriptionViewModel {
             localizedName(for: $0) < localizedName(for: $1)
         }
 
-        selectedLocale = supportedLocales.first { locale in
-            locale.identifier(.bcp47) == Locale.current.identifier(.bcp47)
-        } ?? supportedLocales.first { locale in
-            locale.identifier(.bcp47) == "en-US"
-        } ?? supportedLocales.first
+        selectedLocale =
+            supportedLocales.first { locale in
+                locale.identifier(.bcp47) == Locale.current.identifier(.bcp47)
+            } ?? supportedLocales.first { locale in
+                locale.identifier(.bcp47) == "en-US"
+            } ?? supportedLocales.first
     }
 
     func selectLocale(_ locale: Locale) {

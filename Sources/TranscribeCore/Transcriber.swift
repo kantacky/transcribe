@@ -45,9 +45,11 @@ public final actor Transcriber {
             throw TranscriptionError.failedToSetupRecognitionStream
         }
 
-        guard let analyzerFormat = await SpeechAnalyzer.bestAvailableAudioFormat(
-            compatibleWith: [transcriber]
-        ) else {
+        guard
+            let analyzerFormat = await SpeechAnalyzer.bestAvailableAudioFormat(
+                compatibleWith: [transcriber]
+            )
+        else {
             throw TranscriptionError.failedToSetupRecognitionStream
         }
 
@@ -124,11 +126,14 @@ public final actor Transcriber {
                             break
                         }
 
-                        let nextFrameCapacity = min(frameCapacity, AVAudioFrameCount(framesRemaining))
-                        guard let buffer = AVAudioPCMBuffer(
-                            pcmFormat: audioFile.processingFormat,
-                            frameCapacity: nextFrameCapacity
-                        ) else {
+                        let nextFrameCapacity = min(
+                            frameCapacity, AVAudioFrameCount(framesRemaining))
+                        guard
+                            let buffer = AVAudioPCMBuffer(
+                                pcmFormat: audioFile.processingFormat,
+                                frameCapacity: nextFrameCapacity
+                            )
+                        else {
                             break
                         }
 
