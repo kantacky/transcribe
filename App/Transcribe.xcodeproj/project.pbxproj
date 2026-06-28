@@ -111,28 +111,6 @@
 		};
 /* End PBXNativeTarget section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		C2A538001000000000000003 /* Build CLI via swift build */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build CLI via swift build";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "set -euo pipefail\n\nif [ \"${PLATFORM_NAME:-}\" != \"macosx\" ]; then\n  echo \"Skipping CLI rebuild on platform ${PLATFORM_NAME}\"\n  exit 0\nfi\n\ncd \"$SRCROOT/..\"\n\nif [ \"$CONFIGURATION\" = \"Release\" ]; then\n  SWIFT_CONFIG=\"release\"\nelse\n  SWIFT_CONFIG=\"debug\"\nfi\n\nxcrun swift build -c \"$SWIFT_CONFIG\" --product TranscribeCLI\n\nBIN=\".build/${SWIFT_CONFIG}/TranscribeCLI\"\nDEST=\"${CODESIGNING_FOLDER_PATH}/Contents/Resources/TranscribeCLI\"\n\nmkdir -p \"$(dirname \"$DEST\")\"\ncp -f \"$BIN\" \"$DEST\"\n\nSIGN_IDENTITY=\"${EXPANDED_CODE_SIGN_IDENTITY:-${CODE_SIGN_IDENTITY:--}}\"\ncodesign --force --sign \"$SIGN_IDENTITY\" --options runtime --timestamp=none \"$DEST\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXProject section */
 		C210C5B92FF11F60000A4672 /* Project object */ = {
 			isa = PBXProject;
@@ -175,6 +153,35 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C2A538001000000000000003 /* Build CLI via swift build */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/..",
+				"$(SRCROOT)/../.git",
+				"$(SRCROOT)/Transcribe.xcodeproj",
+				"$(SRCROOT)/.gitignore",
+				"$(SRCROOT)/Transcribe",
+			);
+			name = "Build CLI via swift build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(CODESIGNING_FOLDER_PATH)/Contents/Resources/TranscribeCLI",
+				"$(CODESIGNING_FOLDER_PATH)/Contents/Resources/TranscribeCLI.cstemp",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -euo pipefail\n\nif [ \"${PLATFORM_NAME:-}\" != \"macosx\" ]; then\n  echo \"Skipping CLI rebuild on platform ${PLATFORM_NAME}\"\n  exit 0\nfi\n\ncd \"$SRCROOT/..\"\n\nif [ \"$CONFIGURATION\" = \"Release\" ]; then\n  SWIFT_CONFIG=\"release\"\nelse\n  SWIFT_CONFIG=\"debug\"\nfi\n\nxcrun swift build -c \"$SWIFT_CONFIG\" --product TranscribeCLI --disable-sandbox\n\nBIN=\".build/${SWIFT_CONFIG}/TranscribeCLI\"\nDEST=\"${CODESIGNING_FOLDER_PATH}/Contents/Resources/TranscribeCLI\"\n\nmkdir -p \"$(dirname \"$DEST\")\"\ncp -f \"$BIN\" \"$DEST\"\n\nSIGN_IDENTITY=\"${EXPANDED_CODE_SIGN_IDENTITY:-${CODE_SIGN_IDENTITY:--}}\"\ncodesign --force --sign \"$SIGN_IDENTITY\" --options runtime --timestamp=none \"$DEST\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C28177602FF15FD80085BAD3 /* Sources */ = {
@@ -225,7 +232,7 @@
 				DEVELOPMENT_TEAM = 4YP7SQBLYV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -290,7 +297,7 @@
 				DEVELOPMENT_TEAM = 4YP7SQBLYV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
