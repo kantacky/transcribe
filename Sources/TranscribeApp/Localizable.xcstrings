@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Cannot write to %@." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -22,6 +23,7 @@
       }
     },
     "CLI installed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -73,6 +75,7 @@
       }
     },
     "Install" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -83,6 +86,7 @@
       }
     },
     "Install CLI Tool" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -93,6 +97,7 @@
       }
     },
     "Install CLI Tool…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -103,6 +108,7 @@
       }
     },
     "Installation failed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -113,6 +119,7 @@
       }
     },
     "Installed to %@." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -157,6 +164,7 @@
       "shouldTranslate" : false
     },
     "Select the directory to install \"transcribe\" into. ~/.local/bin is recommended." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -167,6 +175,7 @@
       }
     },
     "The CLI binary is not bundled with this app." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
