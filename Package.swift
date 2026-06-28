@@ -6,13 +6,13 @@ import PackageDescription
 let package = Package(
     name: "transcribe-cli",
     platforms: [
-        .macOS(.v26),
+        .macOS(.v26)
     ],
     products: [
-        .executable(name: "transcribe-cli", targets: ["TranscribeCLI"]),
+        .executable(name: "transcribe-cli", targets: ["TranscribeCLI"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -20,7 +20,7 @@ let package = Package(
         .executableTarget(
             name: "TranscribeCLI",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),
         .testTarget(
