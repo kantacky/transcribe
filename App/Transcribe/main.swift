@@ -1,0 +1,3 @@
+import TranscribeApp
+
+TranscribeApp.main()
