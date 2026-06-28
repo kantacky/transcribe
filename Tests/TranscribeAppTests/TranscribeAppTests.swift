@@ -14,33 +14,32 @@ func showExporterSnapshotsCurrentTranscript() {
             startTime: 1,
             text: AttributedString("hello"),
             isVolatile: false
-        ),
+        )
     ]
 
     model.showExporter()
 
     #expect(model.isShowingExporter)
     #expect(model.exportFileName == "meeting.txt")
-    #expect(model.exportDocument?.text == "[0:01] hello")
+    #expect(model.exportDocument.text == "[0:01] hello")
 }
 
 @MainActor
 @Test
-func finishExportClearsSnapshot() {
+func finishExportDismissesExporter() {
     let model = TranscriptionViewModel()
     model.finalSegments = [
         TranscriptSegment(
             startTime: nil,
             text: AttributedString("hello"),
             isVolatile: false
-        ),
+        )
     ]
     model.showExporter()
 
     model.finishExport()
 
     #expect(!model.isShowingExporter)
-    #expect(model.exportDocument == nil)
 }
 
 @Test
@@ -50,7 +49,7 @@ func exportingTranscriptWithOutOfRangeTimestampDoesNotCrash() {
             startTime: .greatestFiniteMagnitude,
             text: AttributedString("hello"),
             isVolatile: false
-        ),
+        )
     ]
 
     let document = TranscriptTextExporter.document(for: segments)
