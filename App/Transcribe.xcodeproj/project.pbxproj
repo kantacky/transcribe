@@ -8,23 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C29B09472FF1795100CA328E /* TranscribeApp in Frameworks */ = {isa = PBXBuildFile; productRef = C29B09462FF1795100CA328E /* TranscribeApp */; };
-		C2A536CB2FF1770D005E54DB /* TranscribeCLI in Embed CLI Tool */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = C2A536CA2FF1770D005E54DB /* TranscribeCLI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		C2A537022FF177C4005E54DB /* TranscribeCLI in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = C2A536CA2FF1770D005E54DB /* TranscribeCLI */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C2A536711000000000000002 /* Embed CLI Tool */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				C2A536CB2FF1770D005E54DB /* TranscribeCLI in Embed CLI Tool */,
-			);
-			name = "Embed CLI Tool";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C28177642FF15FD80085BAD3 /* Transcribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transcribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2A537022FF177C4005E54DB /* TranscribeCLI in Frameworks */,
 				C29B09472FF1795100CA328E /* TranscribeApp in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,7 +95,7 @@
 				C28177602FF15FD80085BAD3 /* Sources */,
 				C28177612FF15FD80085BAD3 /* Frameworks */,
 				C28177622FF15FD80085BAD3 /* Resources */,
-				C2A536711000000000000002 /* Embed CLI Tool */,
+				C2A538001000000000000003 /* Build CLI via swift build */,
 			);
 			buildRules = (
 			);
@@ -120,7 +103,6 @@
 			);
 			name = Transcribe;
 			packageProductDependencies = (
-				C2A536CA2FF1770D005E54DB /* TranscribeCLI */,
 				C29B09462FF1795100CA328E /* TranscribeApp */,
 			);
 			productName = Transcribe;
@@ -128,6 +110,28 @@
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C2A538001000000000000003 /* Build CLI via swift build */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build CLI via swift build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -euo pipefail\n\nif [ \"${PLATFORM_NAME:-}\" != \"macosx\" ]; then\n  echo \"Skipping CLI rebuild on platform ${PLATFORM_NAME}\"\n  exit 0\nfi\n\ncd \"$SRCROOT/..\"\n\nif [ \"$CONFIGURATION\" = \"Release\" ]; then\n  SWIFT_CONFIG=\"release\"\nelse\n  SWIFT_CONFIG=\"debug\"\nfi\n\nxcrun swift build -c \"$SWIFT_CONFIG\" --product TranscribeCLI\n\nBIN=\".build/${SWIFT_CONFIG}/TranscribeCLI\"\nDEST=\"${CODESIGNING_FOLDER_PATH}/Contents/Resources/TranscribeCLI\"\n\nmkdir -p \"$(dirname \"$DEST\")\"\ncp -f \"$BIN\" \"$DEST\"\n\nSIGN_IDENTITY=\"${EXPANDED_CODE_SIGN_IDENTITY:-${CODE_SIGN_IDENTITY:--}}\"\ncodesign --force --sign \"$SIGN_IDENTITY\" --options runtime --timestamp=none \"$DEST\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXProject section */
 		C210C5B92FF11F60000A4672 /* Project object */ = {
@@ -221,7 +225,7 @@
 				DEVELOPMENT_TEAM = 4YP7SQBLYV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -286,7 +290,7 @@
 				DEVELOPMENT_TEAM = 4YP7SQBLYV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -450,10 +454,6 @@
 		C29B09462FF1795100CA328E /* TranscribeApp */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TranscribeApp;
-		};
-		C2A536CA2FF1770D005E54DB /* TranscribeCLI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TranscribeCLI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
