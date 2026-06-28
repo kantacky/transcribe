@@ -10,7 +10,7 @@ let package = Package(
     ],
     products: [
         .library(name: "TranscribeCore", targets: ["TranscribeCore"]),
-        .executable(name: "transcribe-cli", targets: ["TranscribeCLI"]),
+        .executable(name: "TranscribeCLI", targets: ["TranscribeCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0")
@@ -25,7 +25,8 @@ let package = Package(
         .executableTarget(
             name: "TranscribeCLI",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+                "TranscribeCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .testTarget(
@@ -36,7 +37,9 @@ let package = Package(
         ),
         .testTarget(
             name: "TranscribeCLITests",
-            dependencies: ["TranscribeCLI"]
+            dependencies: [
+                "TranscribeCLI"
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]
