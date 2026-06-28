@@ -5,8 +5,11 @@ import PackageDescription
 
 let package = Package(
     name: "transcribe-cli",
+    platforms: [
+        .macOS(.v26),
+    ],
     products: [
-        .executable(name: "transcribe-cli", targets: ["TranscribeCLI"])
+        .executable(name: "transcribe-cli", targets: ["TranscribeCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
