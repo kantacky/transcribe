@@ -75,5 +75,5 @@ echo "Built: $TARBALL"
 echo "SHA256: $SHA256"
 echo
 echo "次の手順:"
-echo "  gh release upload v${VERSION} \"$TARBALL\""
+echo "  gh release upload ${VERSION} \"$TARBALL\""
 echo "  homebrew-tap の Formula/transcribe.rb の url / sha256 を更新"
