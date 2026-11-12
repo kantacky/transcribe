@@ -58,4 +58,20 @@ struct TranscribeAppTests {
 
         #expect(document.text == "[--:--] hello")
     }
+
+    @Test
+    func exportedTextIncludesSpeakerNumber() {
+        let segments = [
+            TranscriptSegment(
+                startTime: 65,
+                text: "hello",
+                isVolatile: false,
+                speakerNumber: 2
+            )
+        ]
+
+        let text = TranscriptTextExporter.text(for: segments)
+
+        #expect(text == "[1:05] Speaker 2: hello")
+    }
 }

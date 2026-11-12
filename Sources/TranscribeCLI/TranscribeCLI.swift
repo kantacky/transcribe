@@ -17,6 +17,30 @@ struct TranscribeCLI: AsyncParsableCommand {
     @Option(name: [.short, .customLong("locale")], help: "文字起こしに使用するロケール (BCP-47)。例: ja-JP, en-US")
     var localeIdentifier: String?
 
+    @Flag(name: [.short, .long], help: "話者分離を行い、発言ごとに話者を付けて出力します。初回はモデルをダウンロードします。")
+    var diarize = false
+
+    @Option(name: .customLong("min-speakers"), help: "話者分離で推定する話者数の下限")
+    var minSpeakers: Int?
+
+    @Option(name: .customLong("max-speakers"), help: "話者分離で推定する話者数の上限")
+    var maxSpeakers: Int?
+
+    mutating func validate() throws {
+        if let minSpeakers, minSpeakers < 1 {
+            throw ValidationError("--min-speakers は 1 以上を指定してください")
+        }
+        if let maxSpeakers, maxSpeakers < 1 {
+            throw ValidationError("--max-speakers は 1 以上を指定してください")
+        }
+        if let minSpeakers, let maxSpeakers, minSpeakers > maxSpeakers {
+            throw ValidationError("--min-speakers は --max-speakers 以下にしてください")
+        }
+        if !diarize && (minSpeakers != nil || maxSpeakers != nil) {
+            throw ValidationError("--min-speakers / --max-speakers は --diarize と一緒に指定してください")
+        }
+    }
+
     mutating func run() async throws {
         let url = URL(fileURLWithPath: (audioFilePath as NSString).expandingTildeInPath)
 
@@ -28,12 +52,41 @@ struct TranscribeCLI: AsyncParsableCommand {
         let transcriber = Transcriber(locale: locale)
         let stream = try await transcriber.transcribe(audioFileURL: url)
 
+        let diarization: Task<[SpeakerSegment], Error>?
+        if diarize {
+            let diarizer = SpeakerDiarizer(minSpeakers: minSpeakers, maxSpeakers: maxSpeakers)
+            diarization = Task {
+                try await diarizer.diarize(audioFileURL: url)
+            }
+        } else {
+            diarization = nil
+        }
+
         let isTTY = isatty(fileno(stdout)) != 0
         var lastVolatileRows = 0
+        var finalSegments: [TranscriptSegment] = []
 
         for try await result in stream {
             let text = String(result.text.characters)
             let line = "[\(Self.formatTimestamp(result.startTime))] \(text)"
+
+            if diarization != nil, result.kind == .final {
+                // 話者分離が終わるまで確定結果を溜めておき、最後に話者を付けて出力する
+                finalSegments.append(
+                    TranscriptSegment(
+                        startTime: result.startTime,
+                        endTime: result.endTime,
+                        text: result.text,
+                        isVolatile: false,
+                        words: result.words
+                    )
+                )
+                if isTTY {
+                    Self.clearVolatile(rows: lastVolatileRows)
+                    lastVolatileRows = 0
+                }
+                continue
+            }
 
             switch result.kind {
             case .volatile:
@@ -54,9 +107,35 @@ struct TranscribeCLI: AsyncParsableCommand {
             }
         }
 
+        if let diarization {
+            if isTTY {
+                Self.clearVolatile(rows: lastVolatileRows)
+                lastVolatileRows = 0
+            }
+            Self.printToStandardError("話者分離しています...")
+            let speakers = try await diarization.value
+            for segment in SpeakerAttribution.attribute(finalSegments, speakers: speakers) {
+                print(Self.line(for: segment))
+            }
+            return
+        }
+
         if isTTY && lastVolatileRows > 0 {
             print("")
         }
+    }
+
+    private static func line(for segment: TranscriptSegment) -> String {
+        let text = String(segment.text.characters)
+        let timestamp = "[\(formatTimestamp(segment.startTime))]"
+        guard let speakerNumber = segment.speakerNumber else {
+            return "\(timestamp) \(text)"
+        }
+        return "\(timestamp) Speaker \(speakerNumber): \(text)"
+    }
+
+    private static func printToStandardError(_ message: String) {
+        FileHandle.standardError.write(Data((message + "\n").utf8))
     }
 
     private static func terminalColumns() -> Int {

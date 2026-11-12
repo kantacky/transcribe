@@ -19,8 +19,10 @@ final class TranscriptionViewModel {
     var isShowingExporter = false
     var exportFileName = TranscriptTextExporter.fileName(for: nil)
     var exportDocument = TranscriptTextDocument()
+    var isDiarizationEnabled = false
 
     private(set) var isTranscribing = false
+    private(set) var isDiarizing = false
     private(set) var transcriptionProgress = 0.0
     private var transcriptionTask: Task<Void, Never>?
     private var audioDuration: TimeInterval?
@@ -32,6 +34,8 @@ final class TranscriptionViewModel {
     var statusMessage: LocalizedStringKey {
         if isTranscribing {
             "Transcribing..."
+        } else if isDiarizing {
+            "Identifying speakers..."
         } else if supportedLocales.isEmpty {
             "Loading supported languages..."
         } else {
@@ -109,6 +113,17 @@ final class TranscriptionViewModel {
                 throw TranscriptionError.localeNotSupported
             }
 
+            let diarization: Task<[SpeakerSegment], Error>?
+            if isDiarizationEnabled {
+                let diarizer = SpeakerDiarizer()
+                diarization = Task {
+                    try await diarizer.diarize(audioFileURL: url)
+                }
+            } else {
+                diarization = nil
+            }
+            defer { diarization?.cancel() }
+
             let transcriber = Transcriber(locale: selectedLocale)
             let resultStream = try await transcriber.transcribe(audioFileURL: url)
 
@@ -119,12 +134,30 @@ final class TranscriptionViewModel {
 
                 apply(result)
             }
+
+            finishTranscription()
+
+            if let diarization, !Task.isCancelled {
+                isDiarizing = true
+                defer { isDiarizing = false }
+                let speakers = try await withTaskCancellationHandler {
+                    try await diarization.value
+                } onCancel: {
+                    diarization.cancel()
+                }
+                try Task.checkCancellation()
+                finalSegments = SpeakerAttribution.attribute(finalSegments, speakers: speakers)
+            }
         } catch is CancellationError {
             return
         } catch {
             show(error)
         }
 
+        finishTranscription()
+    }
+
+    private func finishTranscription() {
         isTranscribing = false
         transcriptionProgress = 1
         volatileSegment = nil
@@ -137,6 +170,7 @@ final class TranscriptionViewModel {
         errorMessage = ""
         isShowingError = false
         isTranscribing = true
+        isDiarizing = false
         transcriptionProgress = 0
         audioDuration = nil
     }
@@ -149,8 +183,10 @@ final class TranscriptionViewModel {
             finalSegments.append(
                 TranscriptSegment(
                     startTime: result.startTime,
+                    endTime: result.endTime,
                     text: result.text,
-                    isVolatile: false
+                    isVolatile: false,
+                    words: result.words
                 )
             )
             volatileSegment = nil

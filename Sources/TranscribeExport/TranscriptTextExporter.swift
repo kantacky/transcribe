@@ -18,7 +18,12 @@ public enum TranscriptTextExporter {
     public static func text(for segments: [TranscriptSegment]) -> String {
         segments
             .map { segment in
-                "[\(formatTimestamp(segment.startTime))] \(String(segment.text.characters[...]))"
+                let text = String(segment.text.characters[...])
+                let timestamp = "[\(formatTimestamp(segment.startTime))]"
+                guard let speakerNumber = segment.speakerNumber else {
+                    return "\(timestamp) \(text)"
+                }
+                return "\(timestamp) Speaker \(speakerNumber): \(text)"
             }
             .joined(separator: "\n")
     }
