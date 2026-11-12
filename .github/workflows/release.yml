@@ -124,11 +124,12 @@ jobs:
           repositories: homebrew-tap
           permission-contents: write
           permission-pull-requests: write
-      - name: Clone tap
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          gh repo clone "${{ github.repository_owner }}/homebrew-tap" tap
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.repository_owner }}/homebrew-tap
+          token: ${{ steps.app-token.outputs.token }}
+          path: tap
+          persist-credentials: true
       - name: Write formula
         working-directory: tap
         run: |
