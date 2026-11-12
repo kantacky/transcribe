@@ -81,14 +81,16 @@ jobs:
       - uses: kantacky/setup-swift@swift-version-file
       - name: Build
         run: swift build --configuration release --product TranscribeCLI --arch arm64
+      - name: Resolve binary path
+        run: echo "BIN_PATH=$(swift build --configuration release --arch arm64 --show-bin-path)" >> "$GITHUB_ENV"
       - name: Smoke test
-        run: .build/arm64-apple-macosx/release/TranscribeCLI --help
+        run: "$BIN_PATH/TranscribeCLI" --help
       - name: Package
         id: package
         run: |
           archive="transcribe-$VERSION-macos-arm64.tar.gz"
           mkdir -p dist/staging
-          cp .build/arm64-apple-macosx/release/TranscribeCLI dist/staging/transcribe
+          cp "$BIN_PATH/TranscribeCLI" dist/staging/transcribe
           tar -czf "dist/$archive" -C dist/staging transcribe
           (cd dist && shasum -a 256 "$archive" > "$archive.sha256")
           echo "sha256=$(cut -d' ' -f1 "dist/$archive.sha256")" >> "$GITHUB_OUTPUT"
