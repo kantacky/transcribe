@@ -44,3 +44,31 @@ struct TranscribeCLIParsingTests {
         }
     }
 }
+
+@Suite
+struct TranscribeCLIDiarizationParsingTests {
+    @Test
+    func diarizationIsDisabledByDefault() throws {
+        let command = try TranscribeCLI.parse(["/tmp/sample.m4a"])
+
+        #expect(!command.diarize)
+    }
+
+    @Test
+    func parsesDiarizationOptions() throws {
+        let command = try TranscribeCLI.parse([
+            "/tmp/sample.m4a", "--diarize", "--min-speakers", "2", "--max-speakers", "3",
+        ])
+
+        #expect(command.diarize)
+        #expect(command.minSpeakers == 2)
+        #expect(command.maxSpeakers == 3)
+    }
+
+    @Test
+    func rejectsSpeakerCountWithoutDiarize() {
+        #expect(throws: (any Error).self) {
+            try TranscribeCLI.parse(["/tmp/sample.m4a", "--max-speakers", "2"])
+        }
+    }
+}
