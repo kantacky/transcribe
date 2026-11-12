@@ -1,0 +1,193 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump type
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    name: Tag
+    outputs:
+      version: ${{ steps.next.outputs.version }}
+    steps:
+      - name: Ensure running on main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Release must be run from the main branch."
+          exit 1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Compute next version
+        id: next
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          latest=$(git tag --list '[0-9]*.[0-9]*.[0-9]*' | sort -V | tail -n 1)
+          latest=${latest:-0.0.0}
+          IFS=. read -r major minor patch <<< "$latest"
+          case "$BUMP" in
+            major) major=$((major + 1)); minor=0; patch=0 ;;
+            minor) minor=$((minor + 1)); patch=0 ;;
+            patch) patch=$((patch + 1)) ;;
+          esac
+          version="$major.$minor.$patch"
+          if git rev-parse -q --verify "refs/tags/$version" > /dev/null; then
+            echo "::error::Tag $version already exists."
+            exit 1
+          fi
+          echo "Latest: $latest -> Next: $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Create tag
+        env:
+          VERSION: ${{ steps.next.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "$VERSION"
+          git push origin "refs/tags/$VERSION"
+
+  build:
+    needs: tag
+    runs-on: macos-26
+    timeout-minutes: 30
+    name: Build
+    outputs:
+      sha256: ${{ steps.package.outputs.sha256 }}
+    env:
+      VERSION: ${{ needs.tag.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.tag.outputs.version }}
+      - uses: kantacky/setup-swift@swift-version-file
+      - name: Build
+        run: swift build --configuration release --product TranscribeCLI --arch arm64
+      - name: Smoke test
+        run: .build/arm64-apple-macosx/release/TranscribeCLI --help
+      - name: Package
+        id: package
+        run: |
+          archive="transcribe-$VERSION-macos-arm64.tar.gz"
+          mkdir -p dist/staging
+          cp .build/arm64-apple-macosx/release/TranscribeCLI dist/staging/transcribe
+          tar -czf "dist/$archive" -C dist/staging transcribe
+          (cd dist && shasum -a 256 "$archive" > "$archive.sha256")
+          echo "sha256=$(cut -d' ' -f1 "dist/$archive.sha256")" >> "$GITHUB_OUTPUT"
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --generate-notes \
+            --verify-tag \
+            dist/*.tar.gz dist/*.sha256
+
+  update-formula:
+    needs:
+      - tag
+      - build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    name: Update Homebrew formula
+    env:
+      VERSION: ${{ needs.tag.outputs.version }}
+      SHA256: ${{ needs.build.outputs.sha256 }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: homebrew-tap
+      - name: Clone tap
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh repo clone "${{ github.repository_owner }}/homebrew-tap" tap
+      - name: Write formula
+        working-directory: tap
+        run: |
+          mkdir -p Formula
+          cat > Formula/transcribe.rb <<EOF
+          class Transcribe < Formula
+            desc "Transcribe audio files in real time and print to standard output"
+            homepage "https://github.com/${{ github.repository }}"
+            url "https://github.com/${{ github.repository }}/releases/download/${VERSION}/transcribe-${VERSION}-macos-arm64.tar.gz"
+            version "${VERSION}"
+            sha256 "${SHA256}"
+            license :cannot_represent
+
+            depends_on arch: :arm64
+            depends_on macos: :tahoe
+
+            def install
+              bin.install "transcribe"
+            end
+
+            test do
+              assert_match "transcribe", shell_output("#{bin}/transcribe --help")
+            end
+          end
+          EOF
+      - name: Open pull request
+        working-directory: tap
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          branch="transcribe-$VERSION"
+          if gh pr list --head "$branch" --state open --json number --jq 'length' | grep -qv '^0$'; then
+            echo "Pull request for $branch already exists; skipping."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add Formula/transcribe.rb
+          git commit -m "transcribe $VERSION"
+          git push --force origin "$branch"
+          gh pr create \
+            --title "transcribe $VERSION" \
+            --body "Update transcribe to $VERSION." \
+            --base main \
+            --head "$branch"
+
+  cleanup:
+    needs:
+      - tag
+      - build
+      - update-formula
+    if: ${{ always() && needs.tag.result == 'success' && (needs.build.result != 'success' || needs.update-formula.result != 'success') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    name: Cleanup
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Delete release and tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.tag.outputs.version }}
+        run: |
+          gh release delete "$VERSION" --yes --cleanup-tag || true
+          git push origin ":refs/tags/$VERSION" || true
+          echo "::warning::Release $VERSION failed and was rolled back."
