@@ -84,7 +84,7 @@ jobs:
       - name: Resolve binary path
         run: echo "BIN_PATH=$(swift build --configuration release --arch arm64 --show-bin-path)" >> "$GITHUB_ENV"
       - name: Smoke test
-        run: "$BIN_PATH/TranscribeCLI" --help
+        run: '"$BIN_PATH/TranscribeCLI" --help'
       - name: Package
         id: package
         run: |
