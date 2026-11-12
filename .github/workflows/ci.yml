@@ -66,4 +66,4 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: kantacky/setup-swift@swift-version-file
       - name: Lint
-        run: swift format lint . --recursive --strict
+        run: swift format lint --strict --recursive --configuration .swift-format Package.swift Sources Tests
