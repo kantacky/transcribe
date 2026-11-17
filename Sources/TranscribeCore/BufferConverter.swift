@@ -39,18 +39,11 @@ final class BufferConverter {
         }
 
         var nsError: NSError?
-        let bufferProcessed = Mutex(false)
+        let bufferProcessed = ProcessedFlag()
 
         let status = converter.convert(to: conversionBuffer, error: &nsError) {
             packetCount, inputStatusPointer in
-            let shouldProvideBuffer = bufferProcessed.withLock { bufferProcessed in
-                guard !bufferProcessed else {
-                    return false
-                }
-
-                bufferProcessed = true
-                return true
-            }
+            let shouldProvideBuffer = bufferProcessed.markIfNeeded()
 
             inputStatusPointer.pointee = shouldProvideBuffer ? .haveData : .noDataNow
             return shouldProvideBuffer ? buffer : nil
@@ -61,5 +54,15 @@ final class BufferConverter {
         }
 
         return conversionBuffer
+    }
+}
+
+/// Reference wrapper so the noncopyable `Atomic` isn't captured by value in an escaping closure.
+private final class ProcessedFlag: Sendable {
+    private let value = Atomic(false)
+
+    /// Returns `true` the first time it is called, `false` afterwards.
+    func markIfNeeded() -> Bool {
+        value.compareExchange(expected: false, desired: true, ordering: .relaxed).exchanged
     }
 }
