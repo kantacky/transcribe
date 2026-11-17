@@ -88,11 +88,24 @@ public final actor Transcriber {
                 for try await result in transcriber.results {
                     let kind: TranscriptionResult.Kind = result.isFinal ? .final : .volatile
 
+                    let words = result.text.runs.compactMap { run -> TimedWord? in
+                        guard let range = run.audioTimeRange else {
+                            return nil
+                        }
+                        return TimedWord(
+                            text: AttributedString(result.text[run.range]),
+                            startTime: range.start.seconds,
+                            endTime: range.end.seconds
+                        )
+                    }
+
                     resultContinuation.yield(
                         TranscriptionResult(
                             text: result.text,
                             kind: kind,
-                            startTime: result.range.start.seconds
+                            startTime: result.range.start.seconds,
+                            endTime: result.range.end.seconds,
+                            words: words
                         )
                     )
                 }

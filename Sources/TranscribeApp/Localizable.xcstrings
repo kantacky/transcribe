@@ -74,6 +74,27 @@
         }
       }
     },
+    "Identify Speakers" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "話者を分離"
+          }
+        }
+      }
+    },
+    "Identifying speakers..." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "話者を分離しています..."
+          }
+        }
+      }
+    },
     "Install" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -170,6 +191,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "“transcribe” をインストールするディレクトリを選択してください。 ~/.local/bin がおすすめです。"
+          }
+        }
+      }
+    },
+    "Speaker %lld" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "話者 %lld"
           }
         }
       }

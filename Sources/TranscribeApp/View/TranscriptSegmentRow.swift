@@ -12,11 +12,25 @@ struct TranscriptSegmentRow: View {
                 .frame(width: 58, alignment: .trailing)
                 .textSelection(.enabled)
 
-            Text(segment.text)
-                .foregroundStyle(segment.isVolatile ? .secondary : .primary)
-                .textSelection(.enabled)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                if let speakerNumber = segment.speakerNumber {
+                    Text("Speaker \(speakerNumber)", bundle: .module)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Self.color(for: speakerNumber))
+                }
+
+                Text(segment.text)
+                    .foregroundStyle(segment.isVolatile ? .secondary : .primary)
+                    .textSelection(.enabled)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    private static let speakerColors: [Color] = [.blue, .orange, .green, .purple, .pink, .teal]
+
+    private static func color(for speakerNumber: Int) -> Color {
+        speakerColors[(max(speakerNumber, 1) - 1) % speakerColors.count]
     }
 
     private var formattedTimestamp: String {

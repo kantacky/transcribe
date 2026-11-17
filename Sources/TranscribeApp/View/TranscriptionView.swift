@@ -18,6 +18,16 @@ struct TranscriptionView: View {
             )
             .toolbar {
                 ToolbarItem {
+                    Toggle(isOn: $model.isDiarizationEnabled) {
+                        Label(
+                            String(localized: "Identify Speakers", bundle: .module),
+                            systemImage: "person.2.wave.2"
+                        )
+                    }
+                    .help(String(localized: "Identify Speakers", bundle: .module))
+                    .disabled(model.isTranscribing || model.isDiarizing)
+                }
+                ToolbarItem {
                     Button(
                         String(localized: "Export Text", bundle: .module),
                         systemImage: "square.and.arrow.down",

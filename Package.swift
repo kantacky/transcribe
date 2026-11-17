@@ -16,7 +16,8 @@ let package = Package(
         .executable(name: "TranscribeCLI", targets: ["TranscribeCLI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0")
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
+        .package(url: "https://github.com/FluidInference/FluidAudio.git", exact: "0.17.7"),
     ],
     targets: [
         .target(
@@ -31,7 +32,8 @@ let package = Package(
         .target(
             name: "TranscribeCore",
             dependencies: [
-                "TranscribeDomain"
+                "TranscribeDomain",
+                .product(name: "FluidAudio", package: "FluidAudio"),
             ],
             linkerSettings: [
                 .linkedFramework("Speech")
@@ -52,13 +54,15 @@ let package = Package(
             name: "TranscribeCLI",
             dependencies: [
                 "TranscribeCore",
+                "TranscribeDomain",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .testTarget(
             name: "TranscribeCoreTests",
             dependencies: [
-                "TranscribeCore"
+                "TranscribeCore",
+                "TranscribeDomain",
             ]
         ),
         .testTarget(
