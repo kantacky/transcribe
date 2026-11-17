@@ -18,6 +18,8 @@ public final actor SpeakerDiarizer {
     }
 
     public func diarize(audioFileURL: URL) async throws -> [SpeakerSegment] {
+        // FluidAudio の debug ログがライブ表示に混ざらないようにする。
+        AppLogger.minimumLevel = .warning
         var config = OfflineDiarizerConfig.default
         config.clustering.minSpeakers = minSpeakers
         config.clustering.maxSpeakers = maxSpeakers
@@ -25,13 +27,19 @@ public final actor SpeakerDiarizer {
         let manager = OfflineDiarizerManager(config: config)
         let modelConfiguration = MLModelConfiguration()
         modelConfiguration.computeUnits = .cpuAndNeuralEngine
-        try await manager.prepareModels(configuration: modelConfiguration)
+        // prewarm でも `[Profiling]` 行が stderr に直接書かれる。
+        try await Self.withStandardErrorSilenced {
+            try await manager.prepareModels(configuration: modelConfiguration)
+        }
 
         let samples = try AudioConverter().resampleAudioFile(audioFileURL)
 
         let result: DiarizationResult
         do {
-            result = try await manager.process(audio: samples)
+            // `[Profiling]` 行は AppLogger を経由せず stderr に直接書かれるため、処理中だけ stderr を捨てる。
+            result = try await Self.withStandardErrorSilenced {
+                try await manager.process(audio: samples)
+            }
         } catch OfflineDiarizationError.noSpeechDetected {
             return []
         }
@@ -45,6 +53,25 @@ public final actor SpeakerDiarizer {
                 )
             }
         )
+    }
+
+    private static func withStandardErrorSilenced<T>(
+        _ body: () async throws -> T
+    ) async rethrows -> T {
+        let saved = dup(STDERR_FILENO)
+        let devNull = open("/dev/null", O_WRONLY)
+        guard saved >= 0, devNull >= 0 else {
+            if saved >= 0 { close(saved) }
+            if devNull >= 0 { close(devNull) }
+            return try await body()
+        }
+        dup2(devNull, STDERR_FILENO)
+        close(devNull)
+        defer {
+            dup2(saved, STDERR_FILENO)
+            close(saved)
+        }
+        return try await body()
     }
 
     /// 話者 ID を最初に話した順の番号 (1 始まり) に振り直す。
